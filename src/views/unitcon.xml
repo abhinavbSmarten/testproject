@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <template id="unitcon" name="Partner Form">
+        <t t-call="website.layout" t-set="head">
+
+        <!-- <script type="text/javascript" src="/unitcon/static/src/js/unitcon.js"></script> -->
+        <script type="text/javascript">
+
+            function value_change(change_value){
+                switch(change_value.name){
+                    case "ropani":
+                        total_ropani = parseFloat(change_value.value) + parseFloat(document.getElementById("aana").value)/16 + parseFloat(document.getElementById("paisa").value)/64 + parseFloat(document.getElementById("daam").value)/256;
+                        calculate_all_from_ropani(total_ropani)
+                        break
+                    case "aana":
+                        total_ropani = parseFloat(document.getElementById("ropani").value) + parseFloat(change_value.value)/16 + parseFloat(document.getElementById("paisa").value)/64 + parseFloat(document.getElementById("daam").value)/256;
+                        calculate_all_from_ropani(total_ropani)
+                        break
+                    case "paisa":
+                        total_ropani = parseFloat(document.getElementById("ropani").value) + parseFloat(document.getElementById("aana").value)/16 + parseFloat(change_value.value)/64 + parseFloat(document.getElementById("daam").value)/256;
+                        calculate_all_from_ropani(total_ropani)
+                        break
+                    case "daam":
+                        total_ropani = parseFloat(document.getElementById("ropani").value) + parseFloat(document.getElementById("aana").value)/16 + parseFloat(document.getElementById("paisa").value)/64 + parseFloat(change_value.value)/256;
+                        calculate_all_from_ropani(total_ropani)
+                        break
+                    case "bigha":
+                        total_bigha=parseFloat(change_value.value) + parseFloat(document.getElementById("kattha").value)/20 + parseFloat(document.getElementById("dhur").value)/400;
+                        calculate_all_from_bigha(total_bigha)
+                        break
+                    case "kattha":
+                        total_bigha=parseFloat(document.getElementById("bigha").value) + parseFloat(change_value.value)/20 + parseFloat(document.getElementById("dhur").value)/400;
+                        calculate_all_from_bigha(total_bigha)
+                        break
+                    case "dhur":
+                        total_bigha=parseFloat(document.getElementById("bigha").value) + parseFloat(document.getElementById("kattha").value)/20 + parseFloat(change_value.value)/400;
+                        calculate_all_from_bigha(total_bigha)
+                        break
+                    case "square_feet":
+                        calculate_all_from_square_feet(parseFloat(change_value.value))
+                        break
+                    case "square_meter":
+                        square_feet=parseFloat(change_value.value)*10.7639
+                        calculate_all_from_square_feet(square_feet)
+                        break
+            }
+            }
+
+
+            function calculate_all_from_ropani(total_ropani){
+                total_bigha= parseFloat(total_ropani)/13.31
+                document.getElementById("bigha").value=Math.trunc(total_bigha)
+                bigha_rest=total_bigha-Math.trunc(total_bigha)
+                document.getElementById("kattha").value=Math.trunc(parseFloat(bigha_rest)*20)
+                kattha_rest=parseFloat(bigha_rest)*20-Math.trunc(parseFloat(bigha_rest)*20)
+                document.getElementById("dhur").value=parseFloat(kattha_rest)*20
+                document.getElementById("square_feet").value=total_ropani*5476
+                document.getElementById("square_meter").value=total_ropani*508.72
+            }
+
+            function calculate_all_from_bigha(total_bigha){
+                total_ropani=parseFloat(total_bigha)*13.31
+                document.getElementById("ropani").value=Math.trunc(total_ropani)
+                ropani_rest=total_ropani-Math.trunc(total_ropani)
+                document.getElementById("aana").value=Math.trunc(parseFloat(ropani_rest)*16)
+                aana_rest=parseFloat(ropani_rest)*16-Math.trunc(parseFloat(ropani_rest)*4)
+                document.getElementById("paisa").value=Math.trunc(parseFloat(aana_rest)*4)
+                paisa_rest=parseFloat(aana_rest)*4-Math.trunc(parseFloat(aana_rest)*4)
+                document.getElementById("daam").value=parseFloat(paisa_rest)*4
+                document.getElementById("square_feet").value=total_bigha*72900
+                document.getElementById("square_meter").value=total_bigha*6772.63
+            }
+
+            function calculate_all_from_square_feet(square_feet){
+                total_ropani=parseFloat(square_feet)/5476
+                document.getElementById("ropani").value=Math.trunc(total_ropani)
+                ropani_rest=total_ropani-Math.trunc(total_ropani)
+                document.getElementById("aana").value=Math.trunc(parseFloat(ropani_rest)*16)
+                aana_rest=parseFloat(ropani_rest)*16-Math.trunc(parseFloat(ropani_rest)*4)
+                document.getElementById("paisa").value=Math.trunc(parseFloat(aana_rest)*4)
+                paisa_rest=parseFloat(aana_rest)*4-Math.trunc(parseFloat(aana_rest)*4)
+                document.getElementById("daam").value=parseFloat(paisa_rest)*4
+                total_bigha=parseFloat(square_feet)/72900
+                document.getElementById("bigha").value=Math.trunc(total_bigha)
+                bigha_rest=total_bigha-Math.trunc(total_bigha)
+                document.getElementById("kattha").value=Math.trunc(parseFloat(bigha_rest)*20)
+                kattha_rest=parseFloat(bigha_rest)*20-Math.trunc(parseFloat(bigha_rest)*20)
+                document.getElementById("dhur").value=parseFloat(kattha_rest)*20
+                document.getElementById("square_meter").value=parseFloat(square_feet)/10.7639
+            }
+
+
+        </script>
+        <style>
+
+        body{
+            font-family:Courier New;
+        }
+        input{
+            border-style:hidden;
+            -webkit-appearance: none;
+        }
+        </style>
+
+        
+
+            <div id="wrap">
+                <div class="container">
+                <br></br>
+                <br></br>
+                <br></br>
+                    <div class="col-md-12">
+                       <div class="container">
+                            <h3>Ropani</h3>
+                            <span>
+                                <div style="display:inline-block;" >
+                                    <label for="ropani">Ropani</label>
+                                    <div>
+                                        <input class="input" min="0" type="number" value="0" name="ropani" id="ropani" onkeyup="value_change(this)"/>
+                                    </div>
+                                </div>
+            
+                                <div style="display:inline-block;" >
+                                    <label for="aana">Aana</label>
+                                    <div>
+                                        <input type="number" min="0" value="0" name="aana" id="aana" onkeyup="value_change(this)"/>                           
+                                    </div>
+                                </div>
+                           
+                            <div style="display:inline-block;" >
+                                <label for="paisa">Paisa</label>
+                                <div>
+                                    <input type="number" min="0" value="0" name="paisa" id="paisa" onkeyup="value_change(this)"/>
+                                </div>
+                            </div>
+                           
+                            <div style="display:inline-block;" >
+                                <label for="daam">Daam</label>
+                                <div>
+                                    <input type="number" min="0" value="0" name="daam" id="daam" onkeyup="value_change(this)"/>
+                                </div>
+                            </div>
+                            </span>
+                       </div>
+                       <br></br>
+                       <hr></hr>
+                       <div class="container">
+                            <h3>Bigha</h3>
+                            <span>
+                                <div style="display:inline-block;" >
+                                    <label for="bigha">Bigha</label>
+                                    <div>
+                                        <input type="number" value="0" min="0" name="bigha" id="bigha" onkeyup="value_change(this)"/>
+                                    </div>
+                                </div>
+                                <div style="display:inline-block;" >
+                                    <label for="kattha">Kattha</label>
+                                    <div>
+                                        <input type="number" value="0" min="0" name="kattha" id="kattha" onkeyup="value_change(this)"/>
+                                    </div>
+                                </div>
+                                <div style="display:inline-block;" >
+                                    <label for="dhur">Dhur</label>
+                                    <div>
+                                        <input type="number" value="0" min="0" name="dhur" id="dhur" onkeyup="value_change(this)"/>
+                                    </div>
+                                </div>
+                            </span>
+                       </div>
+                       <br></br>
+                       <hr></hr>
+                       <div class="container">
+                            <h3>Feet/Meter</h3>
+                            <span>
+                            <div style="display:inline-block;">
+                                <label for="square_feet">Sq. Feet</label>
+                                <div>
+                                    <input type="number" value="0" min="0" name="square_feet" id="square_feet" onkeyup="value_change(this)"/>
+                                </div>
+                            </div>
+                            <div style="display:inline-block;">
+                                <label for="square_meter">Sq. Meter</label>
+                                <div>
+                                    <input type="number" value="0" min="0" name="square_meter" id="square_meter" onkeyup="value_change(this)"/>
+                                </div>
+                            </div>
+                            </span>
+                       </div>
+                       <br></br>
+                       <hr></hr>
+                    </div>
+                </div>
+              </div>
+          </t>
+    </template>
+</odoo>
