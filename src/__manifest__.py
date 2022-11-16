@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'cpnepal',
-    'version': '1.0.0',
+    'version': '1.0.1',
     'category': 'realestate',
     'sequence': 1,
     'summary': 'cp nepal operations',
