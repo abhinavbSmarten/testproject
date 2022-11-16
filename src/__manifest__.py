@@ -8,7 +8,7 @@
     'description': """Module to manage cp nepal operations.""",
     'author': 'Smarten Technologies',
     'website': '',
-    'depends': ['base','website','crm','invoice','ecommerce','email_marketing','employees'],
+    'depends': ['base','website','crm'],
     'data': [
         "security/ir.model.access.csv",
         "views/unitcon.xml",
